@@ -2,6 +2,7 @@ import hashlib
 
 from fastapi import FastAPI
 import redis
+from detoxify import Detoxify
 
 app = FastAPI()
 redis_client = redis.Redis(host='localhost', port=6379, db=0)
@@ -13,5 +14,9 @@ async def predict(message: str):
     if redis_cashe:
         return redis_cashe
     else:
-        pass
-    return 'out'
+        model = Detoxify('multilingual', device='cuda')
+        prediction = model.predict(message)
+        toxic_text = prediction[max(prediction)] > 0.5
+        for key in prediction:
+            prediction[key] = float(prediction[key])
+        return {'toxic_text': toxic_text, 'meta_data': prediction} 
