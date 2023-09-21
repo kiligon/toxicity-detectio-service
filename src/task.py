@@ -1,6 +1,6 @@
 from detoxify import Detoxify
 from celery import Celery
-
+import torch
 
 app = Celery(
     'celery_app',
@@ -25,7 +25,8 @@ def predict_toxicity(text):
             - 'toxic_text' (str): Either 'Toxic' or 'Nontoxic' based on the prediction threshold.
             - 'meta_value' (dict): A dictionary with toxicity scores for various categories.
     """
-    model = Detoxify('multilingual', device='cuda')
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    model = Detoxify('multilingual', device=device)
     prediction = model.predict(text)
     toxic_text = 'Toxic' if prediction[max(prediction)] > 0.5 else 'Nontoxic'
     for key in prediction:
