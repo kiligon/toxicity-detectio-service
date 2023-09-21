@@ -13,7 +13,7 @@ app = Celery(
 def predict_toxicity(text):
     model = Detoxify('multilingual', device='cuda')
     prediction = model.predict(text)
-    toxic_text = prediction[max(prediction)] > 0.5
+    toxic_text = 'Toxic' if prediction[max(prediction)] > 0.5 else 'Nontoxic'
     for key in prediction:
         prediction[key] = float(prediction[key])
     return {'toxic_text': toxic_text, 'meta_value': prediction}
