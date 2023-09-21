@@ -27,17 +27,7 @@ services:
           - driver: nvidia
             device_ids: ['0']
             capabilities: [gpu]
-  flower:
-    build:
-      context: .
-    depends_on:
-      - celery 
-    networks:
-      - network
-    ports:
-      - "5555:5555" 
-    command: celery -A task flower
-
+                   
   rabbitmq:
     image: "rabbitmq:latest"
     ports:
