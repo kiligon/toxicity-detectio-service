@@ -11,15 +11,15 @@ from task import predict_toxicity
 
 
 app = FastAPI()
-redis_client = redis.Redis(host='localhost', port=6379, db=0)
+redis_client = redis.Redis(host='redis', port=6379, db=0)
 
 
 @app.get('/predict/{message}')
 async def predict(message: str):
     message_hash = hashlib.sha256(message.encode()).hexdigest()
-    redis_cashe = redis_client.get(message_hash)
-    if redis_cashe:
-        return JSONResponse(content=json.loads(redis_cashe))
+    redis_cache = redis_client.get(message_hash)
+    if redis_cache:
+        return JSONResponse(content=json.loads(redis_cache))
     else:
         task_result = predict_toxicity.apply_async(args=[message])
 
