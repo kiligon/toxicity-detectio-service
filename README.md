@@ -1,5 +1,6 @@
 
 # Architecture 
+```
                                                           Worker
                                                         ┌──────────┐
           API server                queue               │          │
@@ -20,3 +21,4 @@
          │  FastAPI  │
          │           │
          └───────────┘
+```
