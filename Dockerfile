@@ -7,7 +7,7 @@ RUN apt-get update && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs 
 COPY requirements.txt /app/
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-COPY . /app/
+COPY ./src /app/
 
 EXPOSE 6379
 
